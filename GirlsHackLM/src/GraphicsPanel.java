@@ -26,7 +26,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 
 	public GraphicsPanel(){
 
-		b = new Robot(50, 120);
+		b = new Boy(50, 120);
 		
 		background = new BackGround();
 

@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public class Character {
+public abstract class Sprite {
 
 	// movement variables
 	protected int x_coordinate;			// These ints will be used for the drawing the png on the graphics panel.
@@ -31,9 +31,10 @@ public class Character {
 	protected boolean jumping;
 	protected boolean isDead;
 	protected ImageResource imageResource;
+	
 
 	// method: Default constructor - see packed constructors comments for a description of parameters.
-	public Character(){
+	public Sprite(){
 		this(200, 300);
 	}
 
@@ -43,7 +44,7 @@ public class Character {
 	//			   existing options or add other options. 0 - pirate, 1 - parrot.
 	//			   x_coordinate - the initial x-coordinate for Character.
 	//			   y_coordinate - the initial y-coordinate for Character.
-	public Character(int x_coordinate, int y_coordinate){
+	public Sprite(int x_coordinate, int y_coordinate){
 
 		this.x_coordinate = x_coordinate;						// Initial coordinates for the Character.
 		this.y_coordinate = y_coordinate; 
@@ -56,8 +57,8 @@ public class Character {
 		
 	}
 
-	public boolean collision(Character c) {
-		return getBounds().intersects(c.getBounds());
+	public boolean collision(Sprite otherSprite) {
+		return getBounds().intersects(otherSprite.getBounds());
 
 	}
 	// method: getBounds
@@ -99,14 +100,14 @@ public class Character {
 	//			   add comments below that describe these integer values, for example...
 	//			   1 - move Character to the right.
 
-	public void move(){
+	public void move(Component c){
 		// move to the right or left - speed will be positive
-		if (!isDead && ((x_coordinate > - imageResource.getImageOffset() && x_direction == -2 || x_direction == -5) ||
-				(x_coordinate + imageResource.getImage().getIconWidth() + imageResource.getImageOffset() < 950 && (x_direction == 2 || x_direction == 5) )))
+		if (!isDead && ((x_coordinate > - (2*imageResource.getImageOffset()) && x_direction == -2 || x_direction == -5) ||
+				(x_coordinate + imageResource.getImage().getIconWidth() + imageResource.getImageOffset() < c.getWidth() && (x_direction == 2 || x_direction == 5) )))
 			x_coordinate += (x_direction);
 		// jump
 		else if (!isDead && (y_coordinate > 0 && y_direction == -1) || 
-				(y_coordinate + imageResource.getImage().getIconWidth() < 343 && y_direction == 1 ))
+				(y_coordinate + imageResource.getImage().getIconWidth() < c.getHeight() && y_direction == 1 ))
 			y_coordinate += (y_direction);
 
 		if(jumping && jumpCounter < 45) {
@@ -175,6 +176,7 @@ public class Character {
 	//			   Component c - this is the component that the image will be drawn onto.
 	public void draw(Graphics g, Component c) {
 		Graphics2D g2 = (Graphics2D)g.create();
+		c.getBounds();
 
 		if(x_direction < 0)
 			g2.drawImage(imageResource.getImage().getImage(), x_coordinate + imageResource.getImage().getIconWidth() + imageResource.getImageOffset(), 

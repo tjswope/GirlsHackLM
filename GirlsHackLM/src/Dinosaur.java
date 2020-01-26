@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public class Dinosaur extends Character{
+public class Dinosaur extends Sprite{
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Dinosaur(){

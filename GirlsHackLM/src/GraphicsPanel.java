@@ -19,25 +19,26 @@ import javax.swing.Timer;
 
 public class GraphicsPanel extends JPanel implements KeyListener{
 
-	private BackGround background;
-	private Timer t;							 // The timer is used to move objects at a consistent time interval.
-	private Character b;						 // A jeep
+	private Background background;
+	private Timer timer;							 // The timer is used to move objects at a consistent time interval.
+	private Sprite sprite;						 // A jeep
+	private Item tree;
 	
-
 	public GraphicsPanel(){
-
-		b = new Boy(50, 120);
+		background = new ForestBackground();
 		
-		background = new BackGround();
+		tree = new Item(350, 400, 1, "images/forest/Object/Tree_2.png");
 
-		setPreferredSize(new Dimension(950,343));    // Set these dimensions to the width 
+		sprite = new Boy(50, 600);
+		
+		setPreferredSize(new Dimension(background.getWidth(),background.getHeight()));    // Set these dimensions to the width 
 													 // of your background picture.   
 
-		t = new Timer(5, new ClockListener(this));   // t is a timer.  This object will call the ClockListener's
+		timer = new Timer(5, new ClockListener(this));   // t is a timer.  This object will call the ClockListener's
 													 // action performed method every 5 milliseconds once the 
 													 // timer is started. You can change how frequently this
 													 // method is called by changing the first parameter.
-		t.start();
+		timer.start();
 		this.setFocusable(true);					 // for keylistener
 		this.addKeyListener(this);
 	}
@@ -50,12 +51,10 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 		Graphics2D g2 = (Graphics2D) g;
 
 		background.draw(this, g);
-//		if(jeep.collision(rock)){	// This code will detect if the pirate and parrot have
-//									// collided.  Make something happen if they do intersect.
-//		}
 
-		b.draw(g2, this);
-		//rock.draw(g2, this);
+		tree.draw(g2, this);
+		sprite.draw(g2, this);
+		
 	}
 
 	// method:clock
@@ -63,8 +62,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 	//				of one of your characters in this method so that it moves as time changes.  After you update the
 	//				coordinates you should repaint the panel.
 	public void clock(){
-		//background.move();
-		b.move();
+		sprite.move(this);
 		
 		this.repaint();
 	}
@@ -78,19 +76,19 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 	public synchronized void keyPressed(KeyEvent e) {
 
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-			b.walkRight();
+			sprite.walkRight();
 		else if(e.getKeyCode() == KeyEvent.VK_LEFT)
-			b.walkLeft();
+			sprite.walkLeft();
 		else if(e.getKeyCode() == KeyEvent.VK_UP)
-			b.moveUp();
+			sprite.moveUp();
 		else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-			b.moveDown();
+			sprite.moveDown();
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
-			b.run();
+			sprite.run();
 		else if(e.getKeyCode() == KeyEvent.VK_J)
-			b.jump();
+			sprite.jump();
 		else if(e.getKeyCode() == KeyEvent.VK_D)
-			b.die();
+			sprite.die();
 	}
 
 
@@ -100,17 +98,15 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 
 	}
 
-
-
 	@Override
 	public synchronized void keyReleased(KeyEvent e) {
 
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT)
-			b.idle();
+			sprite.idle();
 		else if(e.getKeyCode() ==  KeyEvent.VK_UP || e.getKeyCode() ==  KeyEvent.VK_DOWN)
-			b.stop_Vertical();
+			sprite.stop_Vertical();
 		else if(e.getKeyCode() ==  KeyEvent.VK_SPACE)
-			b.slowDown();
+			sprite.slowDown();
 
 	}
 

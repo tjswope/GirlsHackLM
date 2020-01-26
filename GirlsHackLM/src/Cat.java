@@ -8,7 +8,7 @@
 import java.awt.Rectangle;
 
 
-public class Cat extends Character{
+public class Cat extends Sprite{
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Cat(){

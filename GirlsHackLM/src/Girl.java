@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
-public class Girl extends Character{
+public class Girl extends Sprite{
 	
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Girl(){

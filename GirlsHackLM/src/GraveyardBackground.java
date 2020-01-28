@@ -1,13 +1,17 @@
+// Class: Background
+// Written by: Mr. Swope
+// Date: 1/27/2020
+// Description: This class provides the implementation for a GraveyardBackground. You probably won't want to modify this
+//              class.
 import java.awt.Image;
 import java.net.URL;
-
 import javax.swing.ImageIcon;
 
 public class GraveyardBackground extends Background {
 	
 	public GraveyardBackground() {
 		ClassLoader cldr = this.getClass().getClassLoader();	// These five lines of code load the background picture.
-		String imagePath = "images/graveyard/BG.png";	// Change this line if you want to use a different 
+		String imagePath = "images/graveyard/BG.png";			// Change this line if you want to use a different 
 		URL imageURL = cldr.getResource(imagePath);				// background image.  The image should be saved in the
 		scale = 2;
 		

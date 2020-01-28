@@ -1,17 +1,8 @@
-// Class: Character
+// Class: Boy
 // Written by: Mr. Swope
-// Date: 10/28/15
-// Description: This class implements a Character.  This Character will be drawn onto a graphics panel. 
-// 
-// If you modify this class you should add comments that describe when and how you modified the class.  
-
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+// Date: 1/27/2020
+// Description: This class implements an Boy. 
 import java.awt.Rectangle;
-import java.net.URL;
-import javax.swing.ImageIcon;
 
 public class Robot extends Sprite{
 	
@@ -20,10 +11,9 @@ public class Robot extends Sprite{
 		this(200, 300);
 	}
 
-	// method: Character's packed constructor
-	// description: Initialize a new Character object.
-	// parameters: imageChoice - used to determine which image to load when a Character is instantiated.  You can change
-	//			   existing options or add other options. 0 - pirate, 1 - parrot.
+	// method: AdventureBoy's packed constructor
+	// description: Initialize a new AdventureBoy object.
+	// parameters: imageChoice - used to determine which image to load when an AdventureBoy is instantiated.  
 	//			   x_coordinate - the initial x-coordinate for Character.
 	//			   y_coordinate - the initial y-coordinate for Character.
 	public Robot(int x_coordinate, int y_coordinate){

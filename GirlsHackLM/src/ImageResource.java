@@ -77,8 +77,8 @@ public class ImageResource {
 			jumpCount = (jumpCount < (imageMax * 6)-1) ? jumpCount+1 : 0;
 			image = jumpingImages[jumpCount/6];
 		}
-		// idle facing left
-		else if(x_direction == -1 || x_direction == 1){
+		// idle 
+		else if(Math.abs(x_direction) == 1){
 			image = idleImages[imageCount];
 		}
 		// running or walking

@@ -1,6 +1,10 @@
+// Class: Background
+// Written by: Mr. Swope
+// Date: 1/27/2020
+// Description: This class provides the implementation for a TrackBackground. You probably won't want to modify this
+//              class.
 import java.awt.Image;
 import java.net.URL;
-
 import javax.swing.ImageIcon;
 
 public class TrackBackground extends Background {

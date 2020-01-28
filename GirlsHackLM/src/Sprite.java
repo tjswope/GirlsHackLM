@@ -1,7 +1,7 @@
-// Class: Character
+// Class: Sprite
 // Written by: Mr. Swope
-// Date: 10/28/15
-// Description: This class implements a Character.  This Character will be drawn onto a graphics panel. 
+// Date: 1/27/2020
+// Description: This class implements an Item.  This Item will be drawn onto a graphics panel. 
 // 
 // If you modify this class you should add comments that describe when and how you modified the class.  
 
@@ -16,44 +16,39 @@ import javax.swing.ImageIcon;
 public abstract class Sprite {
 
 	// movement variables
-	protected int x_coordinate;			// These ints will be used for the drawing the png on the graphics panel.
-	protected int y_coordinate;			// When the Character's move method is called you should update one or both
-	// of these instance variables.  (0,0) is the top left hand corner of the
-	// panel.  x increases as you move to the right, y increases as you move down.
+	protected int x_coordinate;			// These ints will be used for drawing the png on the graphics panel.
+	protected int y_coordinate;			// When the Sprite's move method is called you should update one or both
+										// of these instance variables.  (0,0) is the top left hand corner of the
+										// panel.  x increases as you move to the right, y increases as you move down.
 
-	protected int x_direction;			// -3 running left, -2 walking left, -1 idle facing left
-	// 1 idle facing right, 2 walking right, 3 running right
+	protected int x_direction;			// -5 running left, -2 walking left, -1 idle facing left
+										// 1 idle facing right, 2 walking right, 5 running right
 
 	protected int y_direction;			// 0 : not moving
-	// - 1 : up
-	// 1 : down
-	protected int jumpCounter;
-	protected boolean jumping;
-	protected boolean isDead;
-	protected ImageResource imageResource;
+										// - 1 : up
+										// 1 : down
+	
+	protected int jumpCounter;			// jumping animation takes several frames. This counter is used to keep track
+										// of this process. If the Sprite isn't jumping this should be set to -1.
+	
+	protected boolean isDead;			// as the name implies, this boolean is set to true of the character dies :(
+	protected ImageResource imageResource; // This object holds all of the images that will be used to draw the Sprite.
 	
 
-	// method: Default constructor - see packed constructors comments for a description of parameters.
-	public Sprite(){
-		this(200, 300);
-	}
-
-	// method: Character's packed constructor
-	// description: Initialize a new Character object.
-	// parameters: imageChoice - used to determine which image to load when a Character is instantiated.  You can change
-	//			   existing options or add other options. 0 - pirate, 1 - parrot.
-	//			   x_coordinate - the initial x-coordinate for Character.
-	//			   y_coordinate - the initial y-coordinate for Character.
+	// method: Sprite's packed constructor
+	// description: Initialize a new Sprite object.
+	// parameters: x_coordinate - the initial x-coordinate for Sprite.
+	//			   y_coordinate - the initial y-coordinate for Sprite.
 	public Sprite(int x_coordinate, int y_coordinate){
 
-		this.x_coordinate = x_coordinate;						// Initial coordinates for the Character.
+		this.x_coordinate = x_coordinate;		// Initial coordinates for the Sprite.
 		this.y_coordinate = y_coordinate; 
 
-		x_direction = 1;
-		y_direction = 0;
+		x_direction = 1;						// Initial directions - 1 for x means that the Sprite is facing to
+												// the right but no moving.
+		y_direction = 0;						// 0 for y direction means it's not moving vertically.
 
 		jumpCounter = -1;
-		jumping = false;
 		
 	}
 
@@ -61,17 +56,16 @@ public abstract class Sprite {
 		return getBounds().intersects(otherSprite.getBounds());
 
 	}
+	
+	public boolean collision(Item item) {
+		return getBounds().intersects(item.getBounds());
+	}
+	
 	// method: getBounds
 	// description: This method will return the coordinates of a rectangle that would be drawn around the 
-	// 				Character's png.  This rectangle can be used to check to see if the Character bumps into 
-	//				another character on your panel by calling the Rectangle's intersects method:
-	//
-	//							p.getBounds().intersects(c.getBounds());
-	//
-	//				in this example p is an instance of the Character class and c is an instance of another
-	//				class that has a getBounds method that also returns a Rectangle, so p.getBounds and
-	//				c.getBounds would both return or evaluate to Rectangle objects.  The intersects method
-	//				return true if the two rectangles overlap, false if they do not.
+	// 				Sprite's png.  This rectangle can be used to check to see if the Item bumps into 
+	//				another Item or Sprite on your panel. This method is called by the collision methods in Sprite 
+	//              and Item. You probably won't call this method directly.
 	// return: A Rectangle - This rectangle would be like drawing a rectangle around the Character's image.
 	public Rectangle getBounds(){
 		return new Rectangle(x_coordinate, y_coordinate, imageResource.getImage().getIconWidth(), 
@@ -93,13 +87,10 @@ public abstract class Sprite {
 	}
 
 	// method: move
-	// description: This method should modify the Character's x or y (or perhaps both) coordinates.  When the 
-	//				graphics panel is repainted the Character will then be drawn in it's new location.
+	// description: This method should modify the Sprite's x or y (or perhaps both) coordinates.  When the 
+	//				graphics panel is repainted the Sprite will then be drawn in it's new location.
 	// parameters: int direction - This parameter should represent the direction that you want to move
-	//			   the Character, so decide on a standard for what each integer value will stand for and then
-	//			   add comments below that describe these integer values, for example...
-	//			   1 - move Character to the right.
-
+	//			   the Sprite,.
 	public void move(Component c){
 		// move to the right or left - speed will be positive
 		if (!isDead && ((x_coordinate > - (2*imageResource.getImageOffset()) && x_direction == -2 || x_direction == -5) ||
@@ -110,23 +101,24 @@ public abstract class Sprite {
 				(y_coordinate + imageResource.getImage().getIconWidth() < c.getHeight() && y_direction == 1 ))
 			y_coordinate += (y_direction);
 
-		if(jumping && jumpCounter < 45) {
+		if(jumpCounter >= 0 && jumpCounter < 45) {
 			jumpCounter++;
 			y_coordinate--;
 		}
-		else if(jumping && jumpCounter < 90){
+		else if(jumpCounter >= 45 && jumpCounter < 90){
 			jumpCounter++;
 			y_coordinate++;
 		}
-		else if(jumping){
-			jumping = false;
+		else {
+			jumpCounter = -1;
 		}
 
-		imageResource.updateImage(x_direction, jumping, isDead);
+		imageResource.updateImage(x_direction + y_direction, jumpCounter >= 0, isDead);
 	}
 
 
-	// methods that deal with horizontal movement
+	// Methods that deal with horizontal movement. These functions don't actually move the Item, they set the direction.
+	// actual movements will occur when the the object's move method is called.
 	public void walkRight() {
 		x_direction = 2;
 	}
@@ -136,6 +128,8 @@ public abstract class Sprite {
 	public void run() {
 		x_direction = (x_direction < 0) ? -5 : 5;
 	}
+	
+	// Methods that deal with vertical movement. These functions don't actually move the Sprite, they set the direction.
 	public void slowDown() {
 		x_direction = (x_direction < 0) ? -2 : 2;
 	}
@@ -144,15 +138,15 @@ public abstract class Sprite {
 	}
 
 	public void jump() {
-		if(!jumping) {
-			jumping = true;
+		if(jumpCounter == -1) 
 			jumpCounter = 0;
-		}
 	}
 
+	// As the method implies, calling this function makes the character die.
 	public void die() {
 		isDead = true;
 	}
+	// As the method implies, calling this function makes the character come back to life.
 	public void resurrect() {
 		isDead = false;
 	}

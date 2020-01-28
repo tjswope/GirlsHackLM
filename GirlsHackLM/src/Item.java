@@ -1,13 +1,12 @@
 // Class: Item
 // Written by: Mr. Swope
-// Date: 10/28/15
-// Description: This class implements a Character.  This Character will be drawn onto a graphics panel. 
+// Date: 1/27/2020
+// Description: This class implements an Item.  This Item will be drawn onto a graphics panel. 
 // 
-// If you modify this class you should add comments that describe when and how you modified the class.  
+// If you modify this class you should add comments that describe how you modified the class.  
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.net.URL;
@@ -16,75 +15,94 @@ import javax.swing.ImageIcon;
 public class Item{
 	
 	// movement variables
-	protected int x_coordinate;			// These ints will be used for the drawing the png on the graphics panel.
-	protected int y_coordinate;			// When the Character's move method is called you should update one or both
-	// of these instance variables.  (0,0) is the top left hand corner of the
-	// panel.  x increases as you move to the right, y increases as you move down.
+	protected int x_coordinate;			// These ints will be used for drawing the png on the graphics panel.
+	protected int y_coordinate;			// When the Item's move method is called you should update one or both
+										// of these instance variables.  (0,0) is the top left hand corner of the
+										// panel.  x increases as you move to the right, y increases as you move down.
 
-	protected int x_direction;			// -3 running left, -2 walking left, -1 idle facing left
-	// 1 idle facing right, 2 walking right, 3 running right
+	protected int x_direction;			// -2 walking left, -1 idle facing left
+										// 1 idle facing right, 2 walking right
 
-	protected int y_direction;			// 0 : not moving
-	// - 1 : up
-	// 1 : down
-	protected ImageIcon image;
-	private int imageScale;
+	protected int y_direction;			// 0 : not moving, - 1 : up, 1 : down
+ 
+	protected ImageIcon image;			// The ImageIcon is what is actually drawn on the Panel
 
 	// method: Default constructor - see packed constructors comments for a description of parameters.
 	public Item(){
-		this(200, 300, 2, "images/forest/Object/Tree_2.png");
+		this(200, 300, "images/forest/objects/Tree_2.png", 2);
 	}
 
+	// method: Item constructor
+	// description: Initialize a new Item object.
+	// parameters: x_coordinate - the initial x-coordinate for Character.
+	//			   y_coordinate - the initial y-coordinate for Character.
+	//             imageString - The image path for the image that you want to draw. Make sure that any images that
+	//                           you would like to draw are in your project and that you give the full path relative to 
+	//                           your project's src folder.
 	public Item(int x_coordinate, int y_coordinate, String imageString){
-		this(x_coordinate, y_coordinate, 2, imageString);
+		this(x_coordinate, y_coordinate, imageString, 2);
 	}
 	
-	// method: Character's packed constructor
-	// description: Initialize a new Character object.
-	// parameters: imageChoice - used to determine which image to load when a Character is instantiated.  You can change
-	//			   existing options or add other options. 0 - pirate, 1 - parrot.
-	//			   x_coordinate - the initial x-coordinate for Character.
+	// method: Item constructor
+	// description: Initialize a new Item object.
+	// parameters: x_coordinate - the initial x-coordinate for Character.
 	//			   y_coordinate - the initial y-coordinate for Character.
-	public Item(int x_coordinate, int y_coordinate, int imageScale, String imageString){
+	//             imageString - The image path for the image that you want to draw. Make sure that any images that
+	//                           you would like to draw are in your project and that you give the full path relative to 
+	//                           your project's src folder.
+	//             imageScale - imageScale is used to make the image bigger or smaller on the Panel. The bigger
+	// 						    the imageScale, the smaller the image will be.
+	public Item(int x_coordinate, int y_coordinate, String imageString, int imageScale){
 
-		this.x_coordinate = x_coordinate;						// Initial coordinates for the Character.
+		this.x_coordinate = x_coordinate;						// Initial coordinates for the Item.
 		this.y_coordinate = y_coordinate; 
 
 		x_direction = 1;
 		y_direction = 0;
 		
-		ClassLoader cldr = this.getClass().getClassLoader();	// These five lines of code load the background picture.
-		String imagePath = "images/forest/objects/Tree_2.png";	// Change this line if you want to use a different 
-		URL imageURL = cldr.getResource(imagePath);				// background image.  The image should be saved in the
+		ClassLoader cldr = this.getClass().getClassLoader();	// These lines of code load the picture.
+		String imagePath = imageString;							
+		URL imageURL = cldr.getResource(imagePath);				
 		
 		image = new ImageIcon(imageURL);
 		
 		Image scaled = image.getImage().getScaledInstance(image.getIconWidth() / imageScale, 
 				image.getIconHeight() / imageScale, Image.SCALE_SMOOTH);
 		
-		image = new ImageIcon(scaled);
-		
+		image = new ImageIcon(scaled);	
 	}
 	
-
-
+	// method: collision
+	// description: This method will return true if the Item collides with the parameter Item.
+	// return: boolean - true if the two items intersect or collide with each other, otherwise false. 
+	public void changeScale(int imageScale) {
+		
+		if(image.getIconWidth() > imageScale && image.getIconHeight() > imageScale) {
+			Image scaled = image.getImage().getScaledInstance(image.getIconWidth() / imageScale, 
+				image.getIconHeight() / imageScale, Image.SCALE_SMOOTH);
+		
+			image = new ImageIcon(scaled);
+		}
+	}
+	
 	// method: getBounds
 	// description: This method will return the coordinates of a rectangle that would be drawn around the 
-	// 				Character's png.  This rectangle can be used to check to see if the Character bumps into 
-	//				another character on your panel by calling the Rectangle's intersects method:
-	//
-	//							p.getBounds().intersects(c.getBounds());
-	//
-	//				in this example p is an instance of the Character class and c is an instance of another
-	//				class that has a getBounds method that also returns a Rectangle, so p.getBounds and
-	//				c.getBounds would both return or evaluate to Rectangle objects.  The intersects method
-	//				return true if the two rectangles overlap, false if they do not.
+	// 				Item's png.  This rectangle can be used to check to see if the Item bumps into 
+	//				another Item or Sprite on your panel. This method is called by the collision methods in Sprite 
+	//              and Item. You probably won't call this method directly.
 	// return: A Rectangle - This rectangle would be like drawing a rectangle around the Character's image.
 	public Rectangle getBounds(){
 		return new Rectangle(x_coordinate, y_coordinate, image.getIconWidth(), 
 				image.getIconWidth());
 	}
 
+	// method: collision
+	// description: This method will return true if the Item collides with the parameter Item.
+	// return: boolean - true if the two items intersect or collide with each other, otherwise false. 
+	public boolean collision(Item otherItem) {
+		return getBounds().intersects(otherItem.getBounds());
+	}
+	
 	// method: getX
 	// description:  This method will return the x-coordinate of the top left hand corner of the the image.
 	// return: int - the x-coordinate of the top left hand corner of the the image.
@@ -99,43 +117,36 @@ public class Item{
 		return y_coordinate;
 	}
 
+	
 	// method: move
-	// description: This method should modify the Character's x or y (or perhaps both) coordinates.  When the 
-	//				graphics panel is repainted the Character will then be drawn in it's new location.
-	// parameters: int direction - This parameter should represent the direction that you want to move
-	//			   the Character, so decide on a standard for what each integer value will stand for and then
-	//			   add comments below that describe these integer values, for example...
-	//			   1 - move Character to the right.
-
-	public void move(){
+	// description: This method will modify the Item's x or y (or perhaps both) coordinates.  When the 
+	//				graphics panel is repainted the Item will then be drawn in it's new location.
+	// parameters: Component c - this is the Panel that the Item will be drawn on. You need this parameter so 
+	//            that you can figure out the dimensions and not go off of the panel when it moves.		   
+	public void move(Component c){
 		// move to the right or left - speed will be positive
-		if (((x_coordinate > 0 && x_direction == -2) || (x_coordinate < 950 && x_direction == 2 )))
+		if (((x_coordinate > 0 && x_direction == -2) || (x_coordinate < c.getWidth() && x_direction == 2 )))
 			x_coordinate += (x_direction);
-		// jump
-		else if ((y_coordinate > 0 && y_direction == -1) || (y_coordinate < 343 && y_direction == 1 ))
+		// move up or down
+		else if ((y_coordinate > 0 && y_direction == -1) || (y_coordinate < c.getHeight() && y_direction == 1 ))
 			y_coordinate += (y_direction);
-
 	}
 
 
-	// methods that deal with horizontal movement
-	public void walkRight() {
+	// methods that deal with horizontal movement. These functions don't actually move the Item, they set the direction.
+	// actual movements will occur when the the object's move method is called.
+	public void moveRight() {
 		x_direction = 2;
 	}
-	public void walkLeft() {
+	public void moveLeft() {
 		x_direction = -2;
 	}
-	public void run() {
-		x_direction = (x_direction < 0) ? -5 : 5;
-	}
-	public void slowDown() {
-		x_direction = (x_direction < 0) ? -2 : 2;
-	}
-	public void idle() {
+
+	public void stop() {
 		x_direction = (x_direction < 0) ? -1 : 1;
 	}
 
-	
+	// methods that deal with vertical movement. These functions don't actually move the Item, they set the direction.
 	public void stop_Vertical() {
 		y_direction = 0;
 	}

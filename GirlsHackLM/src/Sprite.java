@@ -8,10 +8,7 @@
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.net.URL;
-import javax.swing.ImageIcon;
 
 public abstract class Sprite {
 
@@ -41,6 +38,7 @@ public abstract class Sprite {
 	//			   y_coordinate - the initial y-coordinate for Sprite.
 	public Sprite(int x_coordinate, int y_coordinate){
 
+		System.out.println("?");
 		this.x_coordinate = x_coordinate;		// Initial coordinates for the Sprite.
 		this.y_coordinate = y_coordinate; 
 
@@ -68,8 +66,9 @@ public abstract class Sprite {
 	//              and Item. You probably won't call this method directly.
 	// return: A Rectangle - This rectangle would be like drawing a rectangle around the Character's image.
 	public Rectangle getBounds(){
-		return new Rectangle(x_coordinate, y_coordinate, imageResource.getImage().getIconWidth(), 
-				imageResource.getImage().getIconWidth());
+
+		return new Rectangle(x_coordinate + imageResource.getImageOffset(), y_coordinate, imageResource.getImage().getIconWidth(), 
+			imageResource.getImage().getIconHeight());
 	}
 
 	// method: getX
@@ -169,8 +168,7 @@ public abstract class Sprite {
 	// parameters: Graphics g - this object draw's the image.
 	//			   Component c - this is the component that the image will be drawn onto.
 	public void draw(Graphics g, Component c) {
-		Graphics2D g2 = (Graphics2D)g.create();
-		c.getBounds();
+		Graphics2D g2 = (Graphics2D)g;
 
 		if(x_direction < 0)
 			g2.drawImage(imageResource.getImage().getImage(), x_coordinate + imageResource.getImage().getIconWidth() + imageResource.getImageOffset(), 

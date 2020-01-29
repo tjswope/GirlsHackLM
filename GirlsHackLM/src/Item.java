@@ -93,7 +93,7 @@ public class Item{
 	// return: A Rectangle - This rectangle would be like drawing a rectangle around the Character's image.
 	public Rectangle getBounds(){
 		return new Rectangle(x_coordinate, y_coordinate, image.getIconWidth(), 
-				image.getIconWidth());
+				image.getIconHeight());
 	}
 
 	// method: collision

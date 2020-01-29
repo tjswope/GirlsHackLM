@@ -12,6 +12,11 @@ import javax.swing.ImageIcon;
 
 public class ZombieGirl extends Sprite{
 	
+	
+	// method: Default constructor - see packed constructors comments for a description of parameters.
+	public ZombieGirl(){
+		this(200, 300);
+	}
 	// method: ZombieGirl's packed constructor
 	// description: Initialize a new ZombieGirl object.
 	// parameters: imageChoice - used to determine which image to load when a ZombieGirl is instantiated.  
@@ -23,11 +28,6 @@ public class ZombieGirl extends Sprite{
 
 		imageResource = new ImageResource("images/zombieGirl/", 9, 80);
 		jumpCounter = -1;
-	}
-
-	public Rectangle getBounds(){
-		return new Rectangle(x_coordinate, y_coordinate, imageResource.getImage().getIconWidth(), 
-				imageResource.getImage().getIconWidth());
 	}
 
 

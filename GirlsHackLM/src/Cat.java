@@ -25,10 +25,4 @@ public class Cat extends Sprite{
 		jumpCounter = -1;
 	}
 
-	public Rectangle getBounds(){
-		return new Rectangle(x_coordinate, y_coordinate, imageResource.getImage().getIconWidth(), 
-				imageResource.getImage().getIconWidth());
-	}
-
-
 }

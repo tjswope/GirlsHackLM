@@ -73,8 +73,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 		background.draw(this, g);
 
 		tree.draw(g2, this);
-		sprite.draw(g2, this);
-		
+		sprite.draw(g2, this);		
 	}
 
 	// method:clock

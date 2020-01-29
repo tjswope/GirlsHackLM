@@ -30,11 +30,4 @@ public class AdventureGirl extends Sprite{
 		imageResource = new ImageResource("images/adventureGirl/", 8, 80);
 		jumpCounter = -1;
 	}
-
-	public Rectangle getBounds(){
-		return new Rectangle(x_coordinate, y_coordinate, imageResource.getImage().getIconWidth(), 
-				imageResource.getImage().getIconWidth());
-	}
-
-
 }

@@ -87,7 +87,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 		// You can also check to see if two objects intersect like this. In this case if the sprite collides with the
 		// tree, the tree will get smaller. 
 		if(sprite.collision(tree)) {
-			tree.changeScale(4);
+			sprite.die();
 		}
 		
 		this.repaint();

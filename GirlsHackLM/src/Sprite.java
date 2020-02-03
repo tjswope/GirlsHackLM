@@ -38,7 +38,6 @@ public abstract class Sprite {
 	//			   y_coordinate - the initial y-coordinate for Sprite.
 	public Sprite(int x_coordinate, int y_coordinate){
 
-		System.out.println("?");
 		this.x_coordinate = x_coordinate;		// Initial coordinates for the Sprite.
 		this.y_coordinate = y_coordinate; 
 

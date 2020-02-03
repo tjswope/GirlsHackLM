@@ -35,6 +35,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 											// pretty much any image that you would like by passing it
 											// the path for the image.
 	
+	
 	public GraphicsPanel(){
 		background = new ForestBackground();	// You can set the background variable equal to an instance of any of  
 												// the 4 Background subclasses.
